@@ -2,9 +2,10 @@ package diccionario_test
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/require"
 	TDADiccionario "tdas/diccionario"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 var TAMS_VOLUMEN = []int{12500, 25000, 50000, 100000, 200000, 400000}
@@ -356,7 +357,6 @@ func TestIteradorInternoValoresConBorrados(t *testing.T) {
 	dic.Guardar(clave3, 3)
 	dic.Guardar(clave4, 4)
 	dic.Guardar(clave5, 5)
-
 	dic.Borrar(clave0)
 
 	factorial := 1
@@ -490,7 +490,7 @@ func TestIteradorNoLlegaAlFinal(t *testing.T) {
 	iter3 := dic.Iterador()
 	primero, _ := iter3.VerActual()
 	iter3.Siguiente()
-	segundo, _ :=iter3.VerActual()
+	segundo, _ := iter3.VerActual()
 	iter3.Siguiente()
 	tercero, _ := iter3.VerActual()
 	iter3.Siguiente()
