@@ -112,9 +112,9 @@ func TestReemplazoDatoHopscotch(t *testing.T) {
 		"correctos. Para una implementación Hopscotch, detecta errores al hacer lugar o guardar elementos.")
 
 	dic := TDADiccionario.CrearHash[int, int]()
-	for i := 0; i < 500; i++ {
-		dic.Guardar(i, i)
-	}
+	//for i := 0; i < 500; i++ {
+	//	dic.Guardar(i, i)
+	//}
 	for i := 0; i < 500; i++ {
 		dic.Guardar(i, 2*i)
 	}

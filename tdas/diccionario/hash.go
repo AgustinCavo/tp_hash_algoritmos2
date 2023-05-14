@@ -8,7 +8,8 @@ import (
 )
 
 const TAM = 100
-const FACTORCARGA = 2
+const FACTORCARGA float32 = 2
+const FACTORDESCARGA float32 = 0.5
 
 //FactorCarga--->achicar 0,5
 
@@ -62,7 +63,7 @@ func (d *hashAbierto[K, V]) Guardar(clave K, dato V) {
 
 	d.insertar(par, claveHasheada)
 
-	d.redimensionar(d.tam)
+	d.agrandar()
 }
 func (d *hashAbierto[K, V]) insertar(par *parClaveValor[K, V], posTabla int) {
 	iter := d.tabla[posTabla].Iterador()
@@ -112,15 +113,40 @@ func (d *hashAbierto[K, V]) Borrar(clave K) V {
 		d.tabla[d.claveHasheadaModulo(clave)] = nil
 	}
 	d.cantidad -= 1
+	d.achicar()
 	return dato
 }
 
-func (d *hashAbierto[K, V]) redimensionar(tam int) {
-	//Redimensiono cuando el F=n/M >(2 ó 3)??? Siendo n=cant de elementos realmente en la tabla
-	//y M tamaño total del vector,  F es el factor de carga
-	//tabla_nueva := make([]TDALista.Lista[parClaveValor[K, V]], tam) //Me creo una tabla nueva
-	//Los elementos de la tabla que ya tenia los tengo que "rehashear" y mandarlos a la tabla_nueva
-	//Deberia iterar la tabla que tenia..
+func (d *hashAbierto[K, V]) agrandar() {
+	aux := *d
+
+	if float32((d.cantidad / d.tam)) >= FACTORCARGA {
+
+		d.tam = d.tam * 2
+		d.tabla = make([]TDALista.Lista[*parClaveValor[K, V]], d.tam)
+		d.copiar(aux)
+
+	}
+}
+func (d *hashAbierto[K, V]) achicar() {
+	aux := *d
+	if float32((d.cantidad / d.tam)) <= FACTORDESCARGA {
+
+		d.tam = d.tam / 2
+		d.tabla = make([]TDALista.Lista[*parClaveValor[K, V]], d.tam)
+
+		d.copiar(aux)
+
+	}
+}
+func (d *hashAbierto[K, V]) copiar(aux hashAbierto[K, V]) {
+	iter := aux.Iterador()
+	d.cantidad = 0
+	for iter.HaySiguiente() {
+		par := crearClaveValor(iter.VerActual())
+		d.Guardar(par.clave, par.dato)
+		iter.Siguiente()
+	}
 }
 
 func (d *hashAbierto[K, V]) Iterador() IterDiccionario[K, V] {
